@@ -1,1 +1,1 @@
-Generative Pretrained Transformer Implementation from scratch
+Pytorch implementaton of a Generative Pretrained Transformer for text generation
