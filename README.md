@@ -1,1 +1,1 @@
-Pytorch implementaton of a Generative Pretrained Transformer for text generation
+Language modelling and text generation with n-gram models and a decoder-only Transformer, implemented in Pytorch.
