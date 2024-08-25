@@ -103,8 +103,7 @@ class MultiHeadAttention(nn.Module):
 
     def forward(self, x):
         out = torch.cat([h(x) for h in self.heads], dim=-1)
-        proj = self.proj(x)
-        out = self.dropout(proj)
+        out = self.dropout(self.proj(x))
         return out
 
 
@@ -116,7 +115,7 @@ class FeedForward(nn.Module):
         self.net = nn.Sequential(
             nn.Linear(
                 n_embd, 4 * n_embd
-            ),  # attention paper uses 1:4 input to inner-layer dimensionality
+            ),  # attention paper uses 1:4 input to inner-layer dimensionality ratio
             nn.ReLU(),
             nn.Linear(4 * n_embd, n_embd),
             nn.Dropout(dropout),
@@ -218,7 +217,7 @@ optimizer = torch.optim.AdamW(m.parameters(), lr=learning_rate)
 for iter in range(max_iters):
     if (
         iter % eval_interval == 0 or iter == max_iters - 1
-    ):  # at intervals of 500 or at 4999
+    ):  # at intervals of 300 or at 2999
         losses = estimate_loss()
 
         print(
@@ -231,3 +230,6 @@ for iter in range(max_iters):
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
     optimizer.step()
+
+context = torch.zeros((1,1), dtype= torch.long, device=device)
+open('more.txt', 'w').write(decode(m.generate(context, max_new_tokens=1000)[0].tolist()))
